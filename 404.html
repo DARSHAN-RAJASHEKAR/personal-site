@@ -20,72 +20,597 @@
         align-items: center;
         justify-content: center;
         color: white;
+        overflow: hidden;
       }
 
       .error-container {
         text-align: center;
-        max-width: 600px;
+        max-width: 800px;
         padding: 2rem;
+        position: relative;
+        z-index: 10;
+      }
+
+      .glitch-container {
+        position: relative;
+        margin-bottom: 2rem;
       }
 
       .error-code {
         font-size: 8rem;
         font-weight: bold;
-        margin-bottom: 1rem;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        display: inline-block;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .error-code::before,
+      .error-code::after {
+        content: "404";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .error-code::before {
+        animation: glitch-1 2s infinite;
+        color: #ff6b6b;
+        z-index: -1;
+      }
+
+      .error-code::after {
+        animation: glitch-2 2s infinite;
+        color: #4ecdc4;
+        z-index: -2;
+      }
+
+      .broken-robot {
+        font-size: 4rem;
+        margin: 1rem 0;
+        animation: robotShake 2s ease-in-out infinite;
+        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
       }
 
       .error-message {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         margin-bottom: 1rem;
         opacity: 0.9;
+        animation: fadeInUp 1s ease-out 0.5s both;
       }
 
       .error-description {
-        font-size: 1rem;
+        font-size: 1.1rem;
         margin-bottom: 2rem;
         opacity: 0.8;
+        animation: fadeInUp 1s ease-out 0.7s both;
+        line-height: 1.6;
       }
 
-      .home-button {
-        display: inline-block;
+      .search-suggestions {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        animation: fadeInUp 1s ease-out 0.9s both;
+      }
+
+      .suggestions-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #ffd700;
+      }
+
+      .suggestions-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+        list-style: none;
+      }
+
+      .suggestion-item {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px 15px;
+        border-radius: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .suggestion-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .button-group {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: fadeInUp 1s ease-out 1.1s both;
+      }
+
+      .home-button,
+      .refresh-button {
+        display: inline-flex;
+        align-items: center;
         padding: 12px 24px;
         background: rgba(255, 255, 255, 0.2);
         color: white;
         text-decoration: none;
+        border: none;
         border-radius: 25px;
         border: 2px solid rgba(255, 255, 255, 0.3);
         transition: all 0.3s ease;
         font-weight: 500;
+        font-size: 1rem;
+        cursor: pointer;
+        font-family: inherit;
       }
 
-      .home-button:hover {
+      .home-button:hover,
+      .refresh-button:hover {
         background: rgba(255, 255, 255, 0.3);
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       }
 
+      .home-button svg,
+      .refresh-button svg {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+      }
+
+      /* Floating elements */
+      .floating-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .floating-element {
+        position: absolute;
+        font-size: 2rem;
+        opacity: 0.3;
+        animation: floatAround 15s linear infinite;
+      }
+
+      .floating-element:nth-child(1) {
+        animation-delay: 0s;
+        top: 10%;
+        left: 10%;
+      }
+      .floating-element:nth-child(2) {
+        animation-delay: -2s;
+        top: 20%;
+        right: 15%;
+      }
+      .floating-element:nth-child(3) {
+        animation-delay: -4s;
+        bottom: 30%;
+        left: 20%;
+      }
+      .floating-element:nth-child(4) {
+        animation-delay: -6s;
+        bottom: 20%;
+        right: 25%;
+      }
+      .floating-element:nth-child(5) {
+        animation-delay: -8s;
+        top: 50%;
+        left: 5%;
+      }
+      .floating-element:nth-child(6) {
+        animation-delay: -10s;
+        top: 60%;
+        right: 10%;
+      }
+      .floating-element:nth-child(7) {
+        animation-delay: -12s;
+        top: 30%;
+        left: 70%;
+      }
+      .floating-element:nth-child(8) {
+        animation-delay: -14s;
+        bottom: 50%;
+        right: 5%;
+      }
+      .floating-element:nth-child(9) {
+        animation-delay: -16s;
+        top: 70%;
+        left: 30%;
+      }
+      .floating-element:nth-child(10) {
+        animation-delay: -18s;
+        bottom: 10%;
+        left: 60%;
+      }
+      .floating-element:nth-child(11) {
+        animation-delay: -20s;
+        top: 40%;
+        right: 40%;
+      }
+      .floating-element:nth-child(12) {
+        animation-delay: -22s;
+        bottom: 60%;
+        left: 80%;
+      }
+      .floating-element:nth-child(13) {
+        animation-delay: -24s;
+        top: 80%;
+        right: 30%;
+      }
+      .floating-element:nth-child(14) {
+        animation-delay: -26s;
+        top: 15%;
+        left: 3%;
+      }
+      .floating-element:nth-child(15) {
+        animation-delay: -28s;
+        bottom: 15%;
+        left: 8%;
+      }
+
+      /* Stars background (keeping from original design) */
+      .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle 2s infinite;
+      }
+
+      /* Fun loading animation */
+      .loading-dots {
+        display: inline-block;
+        margin-left: 10px;
+      }
+
+      .loading-dots::after {
+        content: "";
+        animation: loadingDots 1.5s infinite;
+      }
+
+      /* Animations */
+      @keyframes glitch-1 {
+        0%,
+        100% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(-2px, 2px);
+        }
+        40% {
+          transform: translate(-2px, -2px);
+        }
+        60% {
+          transform: translate(2px, 2px);
+        }
+        80% {
+          transform: translate(2px, -2px);
+        }
+      }
+
+      @keyframes glitch-2 {
+        0%,
+        100% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(2px, 2px);
+        }
+        40% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        80% {
+          transform: translate(-2px, -2px);
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      @keyframes robotShake {
+        0%,
+        100% {
+          transform: rotate(0deg);
+        }
+        10% {
+          transform: rotate(-5deg);
+        }
+        20% {
+          transform: rotate(5deg);
+        }
+        30% {
+          transform: rotate(-3deg);
+        }
+        40% {
+          transform: rotate(3deg);
+        }
+        50% {
+          transform: rotate(-1deg);
+        }
+        60% {
+          transform: rotate(1deg);
+        }
+        70% {
+          transform: rotate(0deg);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes floatAround {
+        0% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        25% {
+          transform: translateY(-20px) rotate(90deg);
+        }
+        50% {
+          transform: translateY(0px) rotate(180deg);
+        }
+        75% {
+          transform: translateY(-10px) rotate(270deg);
+        }
+        100% {
+          transform: translateY(0px) rotate(360deg);
+        }
+      }
+
+      @keyframes twinkle {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes loadingDots {
+        0% {
+          content: "";
+        }
+        25% {
+          content: ".";
+        }
+        50% {
+          content: "..";
+        }
+        75% {
+          content: "...";
+        }
+        100% {
+          content: "";
+        }
+      }
+
+      /* Responsive Design */
       @media (max-width: 768px) {
         .error-code {
           font-size: 5rem;
         }
         .error-message {
-          font-size: 1.2rem;
+          font-size: 1.4rem;
         }
         .error-container {
           padding: 1rem;
+        }
+        .button-group {
+          flex-direction: column;
+          align-items: center;
+        }
+        .suggestions-list {
+          grid-template-columns: 1fr;
+        }
+        .floating-element {
+          font-size: 1.5rem;
         }
       }
     </style>
   </head>
   <body>
-    <div class="error-container">
-      <div class="error-code">404</div>
-      <div class="error-message">Page Not Found</div>
-      <div class="error-description">
-        The page you're looking for doesn't exist or has been moved.
-      </div>
-      <a href="/" class="home-button">Return Home</a>
+    <div class="stars" id="stars"></div>
+
+    <div class="floating-elements">
+      <div class="floating-element">🚀</div>
+      <div class="floating-element">🚀</div>
+      <div class="floating-element">🚀</div>
+      <div class="floating-element">🔧</div>
+      <div class="floating-element">⚙️</div>
+      <div class="floating-element">🚀</div>
+      <div class="floating-element">🚀</div>
+      <div class="floating-element">🚀</div>
+      <div class="floating-element">💻</div>
+      <div class="floating-element">🔍</div>
+      <div class="floating-element">🚀</div>
+      <div class="floating-element">🚀</div>
+      <div class="floating-element">🚀</div>
+      <div class="floating-element">🚀</div>
+      <div class="floating-element">🚀</div>
     </div>
+
+    <div class="error-container">
+      <div class="glitch-container">
+        <div class="error-code">404</div>
+      </div>
+
+      <div class="error-message">Oops! Page Not Found</div>
+
+      <div class="error-description">
+        Looks like this page took a wrong turn in cyberspace! Don't worry, even
+        the best developers encounter 404s. Let's get you back on track<span
+          class="loading-dots"
+        ></span>
+      </div>
+
+      <div class="search-suggestions">
+        <div class="suggestions-title">🎯 Maybe you were looking for:</div>
+        <ul class="suggestions-list">
+          <li class="suggestion-item" onclick="goHome()">🏠 Home Page</li>
+          <li class="suggestion-item" onclick="goToProjects()">
+            🚀 My Projects
+          </li>
+          <li class="suggestion-item" onclick="showContact()">
+            📧 Contact Info
+          </li>
+          <li class="suggestion-item" onclick="showResume()">📄 Resume/CV</li>
+        </ul>
+      </div>
+
+      <div class="button-group">
+        <a href="/" class="home-button">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+            ></path>
+          </svg>
+          Return Home
+        </a>
+      </div>
+    </div>
+
+    <script>
+      // Create animated stars (keeping from original design)
+      function createStars() {
+        const starsContainer = document.getElementById("stars");
+        const numberOfStars = 100;
+
+        for (let i = 0; i < numberOfStars; i++) {
+          const star = document.createElement("div");
+          star.className = "star";
+          star.style.left = Math.random() * 100 + "%";
+          star.style.top = Math.random() * 100 + "%";
+          star.style.width = Math.random() * 3 + 1 + "px";
+          star.style.height = star.style.width;
+          star.style.animationDelay = Math.random() * 2 + "s";
+          starsContainer.appendChild(star);
+        }
+      }
+
+      // Navigation functions
+      function goHome() {
+        window.location.href = "/";
+      }
+
+      function goToProjects() {
+        window.location.href = "/#projects";
+      }
+
+      function showContact() {
+        alert(
+          "📧 Email: darshan.rajashekar28@gmail.com\n\nFeel free to reach out for any collaborations or opportunities!"
+        );
+      }
+
+      function showResume() {
+        alert(
+          "📄 Resume/CV information:\n\nPlease contact me via email for the latest version of my resume."
+        );
+      }
+
+      function refreshPage() {
+        // Add a fun loading effect before refresh
+        const button = event.target.closest(".refresh-button");
+        const originalText = button.innerHTML;
+        button.innerHTML =
+          '<svg style="animation: spin 1s linear infinite; width: 20px; height: 20px; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>Refreshing...';
+
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      }
+
+      // Add spin animation for refresh button
+      const style = document.createElement("style");
+      style.textContent = `
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `;
+      document.head.appendChild(style);
+
+      // Easter egg: Konami code
+      let konamiCode = [];
+      const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // ↑↑↓↓←→←→BA
+
+      document.addEventListener("keydown", function (e) {
+        konamiCode.push(e.keyCode);
+        if (konamiCode.length > konamiSequence.length) {
+          konamiCode.shift();
+        }
+
+        if (konamiCode.join(",") === konamiSequence.join(",")) {
+          // Easter egg activated!
+          document.body.style.filter = "hue-rotate(180deg)";
+          alert("🎉 Konami Code activated! You found the secret! 🎉");
+          setTimeout(() => {
+            document.body.style.filter = "none";
+          }, 5000);
+          konamiCode = [];
+        }
+      });
+
+      // Initialize
+      createStars();
+
+      // Add some fun random facts about 404 errors
+      const facts = [
+        "Did you know? The first 404 error was at CERN in 1992!",
+        "Fun fact: 404 comes from room 404 where the web's central database was kept!",
+        "404 errors are actually helpful - they prevent broken links from crashing websites!",
+        "The term 'Easter egg' in programming comes from hidden surprises, just like this page!",
+      ];
+
+      // Show random fact after 5 seconds
+      setTimeout(() => {
+        const randomFact = facts[Math.floor(Math.random() * facts.length)];
+        console.log("💡 " + randomFact);
+      }, 5000);
+    </script>
   </body>
 </html>
