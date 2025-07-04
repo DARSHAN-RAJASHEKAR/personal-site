@@ -34,12 +34,43 @@
         min-height: 100vh;
         color: white;
         overflow-x: hidden;
+        position: relative;
       }
 
       .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
+      }
+
+      /* Date and Clock Widget */
+      .datetime-widget {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        color: #ff6b6b;
+        font-family: "Arial Black", sans-serif;
+        animation: slideInFromRight 0.8s ease-out;
+      }
+
+      .clock-date {
+        font-size: 1.2rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .clock-time {
+        font-size: 3rem;
+        font-weight: 900;
+        line-height: 1;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .blinking-colon {
+        animation: blink 1s infinite;
       }
 
       /* Header Section */
@@ -342,6 +373,17 @@
       }
 
       /* Animations */
+      @keyframes slideInFromRight {
+        from {
+          opacity: 0;
+          transform: translateX(100px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
       @keyframes fadeInUp {
         from {
           opacity: 0;
@@ -401,6 +443,19 @@
 
       /* Responsive Design */
       @media (max-width: 768px) {
+        .datetime-widget {
+          top: 10px;
+          right: 10px;
+        }
+
+        .clock-date {
+          font-size: 1rem;
+        }
+
+        .clock-time {
+          font-size: 2rem;
+        }
+
         .greeting {
           font-size: 2rem;
         }
@@ -434,10 +489,31 @@
           padding: 40px 0;
         }
       }
+
+      @media (max-width: 480px) {
+        .datetime-widget {
+          top: 10px;
+          right: 10px;
+        }
+
+        .clock-date {
+          font-size: 0.9rem;
+        }
+
+        .clock-time {
+          font-size: 1.5rem;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="stars" id="stars"></div>
+
+    <!-- Date and Clock Widget -->
+    <div class="datetime-widget">
+      <div class="clock-date" id="clock-date">03 JULY</div>
+      <div class="clock-time" id="clock-time">18:23</div>
+    </div>
 
     <div class="container">
       <div class="header">
@@ -613,6 +689,34 @@
         }
       }
 
+      // Update date and clock
+      function updateClock() {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, "0");
+        const monthNames = [
+          "JANUARY",
+          "FEBRUARY",
+          "MARCH",
+          "APRIL",
+          "MAY",
+          "JUNE",
+          "JULY",
+          "AUGUST",
+          "SEPTEMBER",
+          "OCTOBER",
+          "NOVEMBER",
+          "DECEMBER",
+        ];
+        const month = monthNames[now.getMonth()];
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+
+        document.getElementById("clock-date").textContent = `${day} ${month}`;
+        document.getElementById(
+          "clock-time"
+        ).innerHTML = `${hours}<span class="blinking-colon">:</span>${minutes}`;
+      }
+
       // Update greeting based on IST time
       function updateGreeting() {
         const now = new Date();
@@ -660,13 +764,22 @@
         alert("Email: darshan.rajashekar28@gmail.com");
       }
 
-      // Initialize
-      createStars();
-      updateGreeting();
-      animateOnScroll();
+      // Initialize everything
+      function init() {
+        createStars();
+        updateClock();
+        updateGreeting();
+        animateOnScroll();
 
-      // Update greeting every minute
-      setInterval(updateGreeting, 60000);
+        // Update date/time every second
+        setInterval(updateClock, 1000);
+
+        // Update greeting every minute
+        setInterval(updateGreeting, 60000);
+      }
+
+      // Start when DOM is loaded
+      document.addEventListener("DOMContentLoaded", init);
     </script>
   </body>
 </html>
