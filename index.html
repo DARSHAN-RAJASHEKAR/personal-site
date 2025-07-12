@@ -478,19 +478,6 @@
         from {
           opacity: 0;
           transform: translateX(100px);
-          .alternative-booking {
-            padding: 25px 15px;
-            margin: 50px 20px 0 20px;
-          }
-
-          .alternative-text {
-            font-size: 1.1rem;
-          }
-
-          .alternative-button {
-            padding: 12px 30px;
-            font-size: 1rem;
-          }
         }
         to {
           opacity: 1;
@@ -612,6 +599,45 @@
         .calendar-intro p {
           font-size: 1rem;
         }
+
+        /* Mobile Cal.com fixes - fully extended no scroll */
+        #my-cal-inline-let-s-talk-opportunities {
+          height: auto !important;
+          min-height: 1200px !important;
+          max-height: none !important;
+          width: 100% !important;
+          overflow: visible !important;
+          border-radius: 10px;
+          margin-top: 0px !important;
+          padding-top: 0px !important;
+        }
+
+        #my-cal-inline-let-s-talk-opportunities iframe {
+          width: 100% !important;
+          height: 1200px !important;
+          min-height: 1200px !important;
+          max-height: none !important;
+          border: none !important;
+          overflow: visible !important;
+          margin-top: 0px !important;
+          padding-top: 0px !important;
+          transform: translateY(-5px) !important;
+        }
+
+        .alternative-booking {
+          padding: 25px 15px;
+          margin: -40px 20px 0 20px;
+          transform: translateY(-40px);
+        }
+
+        .alternative-text {
+          font-size: 1.1rem;
+        }
+
+        .alternative-button {
+          padding: 12px 30px;
+          font-size: 1rem;
+        }
       }
 
       @media (max-width: 480px) {
@@ -630,6 +656,36 @@
 
         .calendar-container {
           padding: 10px;
+        }
+
+        /* Small mobile calendar fixes */
+        #my-cal-inline-let-s-talk-opportunities {
+          height: auto !important;
+          min-height: 1300px !important;
+          max-height: none !important;
+          width: 100% !important;
+          overflow: visible !important;
+          border-radius: 10px;
+          margin-top: 0px !important;
+          padding-top: 0px !important;
+        }
+
+        #my-cal-inline-let-s-talk-opportunities iframe {
+          width: 100% !important;
+          height: 1300px !important;
+          min-height: 1300px !important;
+          max-height: none !important;
+          border: none !important;
+          overflow: visible !important;
+          margin-top: 0px !important;
+          padding-top: 0px !important;
+          transform: translateY(-10px) !important;
+        }
+
+        .alternative-booking {
+          padding: 20px 15px;
+          margin: -60px 15px 0 15px;
+          transform: translateY(-60px);
         }
       }
     </style>
@@ -890,41 +946,75 @@
         layout: "month_view",
       });
 
-      // Force mobile calendar to be fully extended
+      // Enhanced mobile calendar fixes
       function fixMobileCalendar() {
         const calContainer = document.getElementById(
           "my-cal-inline-let-s-talk-opportunities"
         );
         if (calContainer && window.innerWidth <= 768) {
+          // Set generous height for mobile to show calendar + ALL time slots
+          const mobileHeight = window.innerWidth <= 480 ? "1300px" : "1200px";
+
+          calContainer.style.height = mobileHeight;
+          calContainer.style.minHeight = mobileHeight;
+          calContainer.style.maxHeight = "none";
+          calContainer.style.overflow = "visible";
+          calContainer.style.marginTop = "0px";
+          calContainer.style.paddingTop = "0px";
+
           const iframe = calContainer.querySelector("iframe");
           if (iframe) {
-            iframe.style.height = "auto";
-            iframe.style.minHeight = "700px";
+            iframe.style.height = mobileHeight;
+            iframe.style.minHeight = mobileHeight;
             iframe.style.maxHeight = "none";
             iframe.style.overflow = "visible";
+            iframe.style.marginTop = "0px";
+            iframe.style.paddingTop = "0px";
+            iframe.style.border = "none";
+            iframe.style.width = "100%";
 
-            // Remove any height restrictions from Cal.com
+            // Apply transform to reduce top spacing
+            if (window.innerWidth <= 480) {
+              iframe.style.transform = "translateY(-10px)";
+            } else {
+              iframe.style.transform = "translateY(-5px)";
+            }
+
+            // Inject CSS to override Cal.com internal spacing
             iframe.onload = function () {
               try {
                 const iframeDoc =
                   iframe.contentDocument || iframe.contentWindow.document;
-                const calEmbed = iframeDoc.querySelector(".cal-embed");
-                if (calEmbed) {
-                  calEmbed.style.height = "auto";
-                  calEmbed.style.maxHeight = "none";
-                  calEmbed.style.overflow = "visible";
+                if (iframeDoc) {
+                  const style = iframeDoc.createElement("style");
+                  style.textContent = `
+                    .cal-embed {
+                      margin-top: 0px !important;
+                      padding-top: 0px !important;
+                    }
+                    .cal-embed > div {
+                      margin-top: 0px !important;
+                      padding-top: 0px !important;
+                    }
+                  `;
+                  iframeDoc.head.appendChild(style);
                 }
               } catch (e) {
                 // Cross-origin restrictions - normal behavior
+                console.log("Cross-origin iframe styling blocked (expected)");
               }
             };
           }
         }
       }
 
-      // Apply fixes after Cal.com loads
-      setTimeout(fixMobileCalendar, 2000);
-      window.addEventListener("resize", fixMobileCalendar);
+      // Apply mobile fixes multiple times to ensure they stick
+      function applyMobileFixes() {
+        fixMobileCalendar();
+        setTimeout(fixMobileCalendar, 1000);
+        setTimeout(fixMobileCalendar, 3000);
+        setTimeout(fixMobileCalendar, 5000);
+      }
 
       // Cal.com popup embed script for alternative booking
       Cal("init", "quick-call", { origin: "https://app.cal.com" });
@@ -1037,7 +1127,15 @@
 
         // Update greeting every minute
         setInterval(updateGreeting, 60000);
+
+        // Apply mobile calendar fixes
+        applyMobileFixes();
       }
+
+      // Apply mobile fixes on window resize
+      window.addEventListener("resize", function () {
+        setTimeout(applyMobileFixes, 100);
+      });
 
       // Start when DOM is loaded
       document.addEventListener("DOMContentLoaded", init);

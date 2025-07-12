@@ -280,16 +280,6 @@
         animation: twinkle 2s infinite;
       }
 
-      /* Fun loading animation */
-      .loading-dots {
-        display: inline-block;
-        margin-left: 10px;
-      }
-
-      .loading-dots::after {
-        content: "";
-        animation: loadingDots 1.5s infinite;
-      }
 
       /* Animations */
       @keyframes glitch-1 {
@@ -478,10 +468,8 @@
       <div class="error-message">Oops! Page Not Found</div>
 
       <div class="error-description">
-        Looks like this page took a wrong turn in cyberspace! Don't worry, even
-        the best developers encounter 404s. Let's get you back on track<span
-          class="loading-dots"
-        ></span>
+        Looks like this page took a wrong turn in cyberspace! Let's get you back
+        on track.</span>
       </div>
 
       <div class="search-suggestions">
@@ -490,6 +478,9 @@
           <li class="suggestion-item" onclick="goHome()">🏠 Home Page</li>
           <li class="suggestion-item" onclick="goToProjects()">
             🚀 My Projects
+          </li>
+          <li class="suggestion-item" onclick="scheduleCall()">
+            📅 Schedule Call
           </li>
           <li class="suggestion-item" onclick="showContact()">
             📧 Contact Info
@@ -538,6 +529,10 @@
 
       function goToProjects() {
         window.location.href = "/#projects";
+      }
+
+      function scheduleCall() {
+        window.location.href = "/#calendar";
       }
 
       function showContact() {
@@ -599,16 +594,45 @@
       createStars();
 
       // Add some fun random facts about 404 errors
-      const facts = [
-        "Did you know? The first 404 error was at CERN in 1992!",
-        "Fun fact: 404 comes from room 404 where the web's central database was kept!",
-        "404 errors are actually helpful - they prevent broken links from crashing websites!",
-        "The term 'Easter egg' in programming comes from hidden surprises, just like this page!",
-      ];
+     const facts = [
+                    "Did you know? The first 404 error was at CERN in 1992!",
+                    "Fun fact: 404 comes from room 404 where the web's central database was kept!",
+                    "The term 'Easter egg' in programming comes from hidden surprises, just like this page!",
+                    "The first computer bug was literally a moth trapped in a relay of the Harvard Mark II computer in 1947!",
+                    "The name 'Wi-Fi' doesn't actually stand for anything. It was created by a branding firm because it sounded catchy!",
+                    "The first domain name ever registered was Symbolics.com on March 15, 1985.",
+                    "The QWERTY keyboard was designed to slow typists down to prevent early typewriter keys from jamming.",
+                    "The first photo ever uploaded to the web was of a comedy band called Les Horribles Cernettes."
+                  ];
 
       // Show random fact after 5 seconds
       setTimeout(() => {
         const randomFact = facts[Math.floor(Math.random() * facts.length)];
+        
+        // Create and display the fact on the page
+        const factElement = document.createElement('div');
+        factElement.innerHTML = `
+          <div style="
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+            text-align: center;
+            font-size: 0.95rem;
+            animation: fadeInUp 0.5s ease-out;
+            backdrop-filter: blur(10px);
+            color: #fff;
+          ">
+            💡 <strong>Fun Fact:</strong> ${randomFact}
+          </div>
+        `;
+        
+        // Insert the fact before the button group
+        const buttonGroup = document.querySelector('.button-group');
+        buttonGroup.parentNode.insertBefore(factElement, buttonGroup);
+        
         console.log("💡 " + randomFact);
       }, 5000);
     </script>
