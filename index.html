@@ -646,7 +646,7 @@
     <div class="container">
       <div class="header">
         <div class="greeting" id="greeting">Good Morning</div>
-        <div class="wonderful">Hello Wonderful Person!</div>
+        <div class="wonderful">Wonderful Person!</div>
 
         <div class="coding-scene">
           <div class="monitor">
@@ -882,13 +882,49 @@
       });
       Cal.ns["let-s-talk-opportunities"]("inline", {
         elementOrSelector: "#my-cal-inline-let-s-talk-opportunities",
-        config: { layout: "month_view" },
+        config: { layout: "month_view", theme: "dark" },
         calLink: "darshan-rajashekar/let-s-talk-opportunities",
       });
       Cal.ns["let-s-talk-opportunities"]("ui", {
         hideEventTypeDetails: false,
         layout: "month_view",
       });
+
+      // Force mobile calendar to be fully extended
+      function fixMobileCalendar() {
+        const calContainer = document.getElementById(
+          "my-cal-inline-let-s-talk-opportunities"
+        );
+        if (calContainer && window.innerWidth <= 768) {
+          const iframe = calContainer.querySelector("iframe");
+          if (iframe) {
+            iframe.style.height = "auto";
+            iframe.style.minHeight = "700px";
+            iframe.style.maxHeight = "none";
+            iframe.style.overflow = "visible";
+
+            // Remove any height restrictions from Cal.com
+            iframe.onload = function () {
+              try {
+                const iframeDoc =
+                  iframe.contentDocument || iframe.contentWindow.document;
+                const calEmbed = iframeDoc.querySelector(".cal-embed");
+                if (calEmbed) {
+                  calEmbed.style.height = "auto";
+                  calEmbed.style.maxHeight = "none";
+                  calEmbed.style.overflow = "visible";
+                }
+              } catch (e) {
+                // Cross-origin restrictions - normal behavior
+              }
+            };
+          }
+        }
+      }
+
+      // Apply fixes after Cal.com loads
+      setTimeout(fixMobileCalendar, 2000);
+      window.addEventListener("resize", fixMobileCalendar);
 
       // Cal.com popup embed script for alternative booking
       Cal("init", "quick-call", { origin: "https://app.cal.com" });
