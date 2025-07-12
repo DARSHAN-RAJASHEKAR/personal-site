@@ -370,19 +370,23 @@
         border-radius: 15px;
         padding: 20px;
         margin-top: 30px;
-        min-height: 600px;
+        min-height: auto;
       }
 
       /* Cal.com widget styling overrides */
       #my-cal-inline-let-s-talk-opportunities {
         border-radius: 15px;
-        overflow: hidden;
+        overflow: visible;
+        height: auto !important;
+        min-height: 600px;
       }
 
       /* Override Cal.com's default styling */
       #my-cal-inline-let-s-talk-opportunities iframe {
         border-radius: 15px;
         background: transparent !important;
+        height: auto !important;
+        min-height: 600px !important;
       }
 
       /* Alternative Booking Section */
@@ -812,9 +816,9 @@
           <div
             style="
               width: 100%;
-              height: 450px;
-              overflow: auto;
-              -webkit-overflow-scrolling: touch;
+              height: auto;
+              min-height: 600px;
+              overflow: visible;
             "
             id="my-cal-inline-let-s-talk-opportunities"
           ></div>
