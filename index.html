@@ -354,6 +354,103 @@
         color: white;
       }
 
+      /* Calendar Section */
+      .calendar-section {
+        padding: 80px 0;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        margin: 40px 0;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        animation: fadeInUp 1s ease-out;
+      }
+
+      .calendar-container {
+        background: transparent;
+        border-radius: 15px;
+        padding: 20px;
+        margin-top: 30px;
+        min-height: 600px;
+      }
+
+      /* Cal.com widget styling overrides */
+      #my-cal-inline-let-s-talk-opportunities {
+        border-radius: 15px;
+        overflow: hidden;
+      }
+
+      /* Override Cal.com's default styling */
+      #my-cal-inline-let-s-talk-opportunities iframe {
+        border-radius: 15px;
+        background: transparent !important;
+      }
+
+      /* Alternative Booking Section */
+      .alternative-booking {
+        text-align: center;
+        margin: 60px 40px 0 40px;
+        padding: 30px 20px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        animation: fadeInUp 1.2s ease-out;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .alternative-text {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+      }
+
+      .alternative-button {
+        background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .alternative-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        background: linear-gradient(45deg, #ff5252, #ff6b6b);
+      }
+
+      .alternative-button:active {
+        transform: translateY(-1px);
+      }
+
+      .calendar-intro {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 0 20px;
+      }
+
+      .calendar-intro h3 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .calendar-intro p {
+        font-size: 1.1rem;
+        opacity: 0.8;
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
       /* Stars Background */
       .stars {
         position: fixed;
@@ -377,6 +474,19 @@
         from {
           opacity: 0;
           transform: translateX(100px);
+          .alternative-booking {
+            padding: 25px 15px;
+            margin: 50px 20px 0 20px;
+          }
+
+          .alternative-text {
+            font-size: 1.1rem;
+          }
+
+          .alternative-button {
+            padding: 12px 30px;
+            font-size: 1rem;
+          }
         }
         to {
           opacity: 1;
@@ -488,6 +598,16 @@
         .header {
           padding: 40px 0;
         }
+        .calendar-container {
+          padding: 15px;
+          margin-top: 20px;
+        }
+        .calendar-intro h3 {
+          font-size: 1.5rem;
+        }
+        .calendar-intro p {
+          font-size: 1rem;
+        }
       }
 
       @media (max-width: 480px) {
@@ -502,6 +622,10 @@
 
         .clock-time {
           font-size: 1.5rem;
+        }
+
+        .calendar-container {
+          padding: 10px;
         }
       }
     </style>
@@ -518,7 +642,7 @@
     <div class="container">
       <div class="header">
         <div class="greeting" id="greeting">Good Morning</div>
-        <div class="wonderful">Hello Wonderful Person!</div>
+        <div class="wonderful">Wonderful Person!</div>
 
         <div class="coding-scene">
           <div class="monitor">
@@ -669,9 +793,101 @@
           </div>
         </div>
       </section>
+
+      <!-- Calendar Section -->
+      <section class="calendar-section" id="calendar">
+        <h2 class="section-title">Let's Connect</h2>
+
+        <div class="calendar-intro">
+          <h3>Schedule a Meeting</h3>
+          <p>
+            Ready to discuss opportunities, collaborate on projects, or just
+            have a chat? Book a time that works for you and let's explore how we
+            can work together.
+          </p>
+        </div>
+
+        <div class="calendar-container">
+          <!-- Cal inline embed code begins -->
+          <div
+            style="width: 100%; height: 600px; overflow: hidden"
+            id="my-cal-inline-let-s-talk-opportunities"
+          ></div>
+          <!-- Cal inline embed code ends -->
+        </div>
+
+        <!-- Alternative Booking Option -->
+        <div class="alternative-booking">
+          <p class="alternative-text">
+            Want to connect call at your convenient time?
+          </p>
+          <button
+            class="alternative-button"
+            data-cal-link="darshan-rajashekar/quick-call"
+            data-cal-namespace="quick-call"
+            data-cal-config='{"layout":"month_view"}'
+          >
+            Click Here!
+          </button>
+        </div>
+      </section>
     </div>
 
     <script>
+      // Cal.com embed script
+      (function (C, A, L) {
+        let p = function (a, ar) {
+          a.q.push(ar);
+        };
+        let d = C.document;
+        C.Cal =
+          C.Cal ||
+          function () {
+            let cal = C.Cal;
+            let ar = arguments;
+            if (!cal.loaded) {
+              cal.ns = {};
+              cal.q = cal.q || [];
+              d.head.appendChild(d.createElement("script")).src = A;
+              cal.loaded = true;
+            }
+            if (ar[0] === L) {
+              const api = function () {
+                p(api, arguments);
+              };
+              const namespace = ar[1];
+              api.q = api.q || [];
+              if (typeof namespace === "string") {
+                cal.ns[namespace] = cal.ns[namespace] || api;
+                p(cal.ns[namespace], ar);
+                p(cal, ["initNamespace", namespace]);
+              } else p(cal, ar);
+              return;
+            }
+            p(cal, ar);
+          };
+      })(window, "https://app.cal.com/embed/embed.js", "init");
+
+      Cal("init", "let-s-talk-opportunities", {
+        origin: "https://app.cal.com",
+      });
+      Cal.ns["let-s-talk-opportunities"]("inline", {
+        elementOrSelector: "#my-cal-inline-let-s-talk-opportunities",
+        config: { layout: "month_view" },
+        calLink: "darshan-rajashekar/let-s-talk-opportunities",
+      });
+      Cal.ns["let-s-talk-opportunities"]("ui", {
+        hideEventTypeDetails: false,
+        layout: "month_view",
+      });
+
+      // Cal.com popup embed script for alternative booking
+      Cal("init", "quick-call", { origin: "https://app.cal.com" });
+      Cal.ns["quick-call"]("ui", {
+        hideEventTypeDetails: false,
+        layout: "month_view",
+      });
+
       // Create animated stars
       function createStars() {
         const starsContainer = document.getElementById("stars");
