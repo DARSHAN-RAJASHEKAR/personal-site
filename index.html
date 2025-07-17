@@ -354,6 +354,209 @@
         color: white;
       }
 
+      /* Contact Form Styles */
+      .contact-section {
+        padding: 80px 0;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        margin: 40px 0;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        animation: fadeInUp 1s ease-out;
+      }
+
+      .contact-intro {
+        text-align: center;
+        margin-bottom: 50px;
+        padding: 0 20px;
+      }
+
+      .contact-intro h3 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .contact-intro p {
+        font-size: 1.1rem;
+        opacity: 0.8;
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .contact-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .contact-form {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        animation: fadeInUp 1.2s ease-out;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+        position: relative;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1rem;
+      }
+
+      .optional-label {
+        font-weight: 400;
+        font-size: 0.85rem;
+        opacity: 0.7;
+        font-style: italic;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+      }
+
+      .form-group input::placeholder,
+      .form-group textarea::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #ff6b6b;
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+        font-family: inherit;
+      }
+
+      .error-message {
+        position: absolute;
+        bottom: -20px;
+        left: 0;
+        color: #ff6b6b;
+        font-size: 0.85rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .error-message.show {
+        opacity: 1;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        background: linear-gradient(45deg, #ff5252, #ff6b6b);
+      }
+
+      .submit-btn:active {
+        transform: translateY(0);
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .loading-spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .loading-spinner.show {
+        opacity: 1;
+      }
+
+      .btn-text {
+        transition: opacity 0.3s ease;
+      }
+
+      .btn-text.hide {
+        opacity: 0;
+      }
+
+      .form-message {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: 500;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+      }
+
+      .form-message.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .form-message.success {
+        background: rgba(16, 185, 129, 0.2);
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        color: #10b981;
+      }
+
+      .form-message.error {
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        color: #ef4444;
+      }
+
       /* Calendar Section */
       .calendar-section {
         padding: 80px 0;
@@ -542,6 +745,15 @@
         }
       }
 
+      @keyframes spin {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
       /* Responsive Design */
       @media (max-width: 768px) {
         .datetime-widget {
@@ -597,6 +809,29 @@
           font-size: 1.5rem;
         }
         .calendar-intro p {
+          font-size: 1rem;
+        }
+
+        /* Contact Form Mobile */
+        .contact-form {
+          padding: 30px 20px;
+        }
+
+        .contact-intro h3 {
+          font-size: 1.5rem;
+        }
+
+        .contact-intro p {
+          font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+          padding: 10px 14px;
+        }
+
+        .submit-btn {
+          padding: 12px;
           font-size: 1rem;
         }
 
@@ -656,6 +891,14 @@
 
         .calendar-container {
           padding: 10px;
+        }
+
+        .contact-container {
+          padding: 0 15px;
+        }
+
+        .contact-form {
+          padding: 25px 15px;
         }
 
         /* Small mobile calendar fixes */
@@ -838,7 +1081,7 @@
             </div>
 
             <div class="project-links">
-              <a href="#" class="project-link" onclick="showEmail(event)">
+              <a href="#contact" class="project-link">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
@@ -851,6 +1094,73 @@
               </a>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- Contact Form Section -->
+      <section class="contact-section" id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+
+        <div class="contact-intro">
+          <h3>Let's Start a Conversation</h3>
+          <p>
+            Have a project in mind? Want to collaborate? Or just want to say
+            hello? I'd love to hear from you. Drop me a message and I'll get
+            back to you as soon as possible.
+          </p>
+        </div>
+
+        <div class="contact-container">
+          <form class="contact-form" id="contactForm">
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" required />
+              <span class="error-message" id="nameError"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" required />
+              <span class="error-message" id="emailError"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="phone"
+                >Phone Number
+                <span class="optional-label">(Optional)</span></label
+              >
+              <input type="tel" id="phone" name="phone" />
+              <span class="error-message" id="phoneError"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="link"
+                >Website/LinkedIn
+                <span class="optional-label">(Optional)</span></label
+              >
+              <input type="url" id="link" name="link" />
+              <span class="error-message" id="linkError"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                required
+              ></textarea>
+              <span class="error-message" id="messageError"></span>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+              <span class="btn-text">Send Message</span>
+              <span class="loading-spinner" id="loadingSpinner"></span>
+            </button>
+          </form>
+
+          <!-- Success/Error Messages -->
+          <div class="form-message" id="formMessage"></div>
         </div>
       </section>
 
@@ -1109,11 +1419,214 @@
         cards.forEach((card) => observer.observe(card));
       }
 
-      // Show email address when Get in Touch is clicked
-      function showEmail(event) {
-        event.preventDefault();
-        alert("Email: darshan.rajashekar28@gmail.com");
+      // Contact Form JavaScript
+      const form = document.getElementById("contactForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const btnText = submitBtn.querySelector(".btn-text");
+      const loadingSpinner = document.getElementById("loadingSpinner");
+      const formMessage = document.getElementById("formMessage");
+
+      // Form validation
+      function validateForm() {
+        let isValid = true;
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const link = document.getElementById("link").value.trim();
+        const message = document.getElementById("message").value.trim();
+
+        // Clear previous errors
+        clearErrors();
+
+        // Name validation
+        if (name.length < 2) {
+          showError("nameError", "Name must be at least 2 characters long");
+          isValid = false;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showError("emailError", "Please enter a valid email address");
+          isValid = false;
+        }
+
+        // Phone validation (optional)
+        if (phone.length > 0) {
+          const phoneRegex = /^[\+]?[0-9\s\-\(\)]{6,20}$/;
+          if (!phoneRegex.test(phone)) {
+            showError("phoneError", "Please enter a valid phone number");
+            isValid = false;
+          }
+        }
+
+        // Link validation (optional)
+        if (link.length > 0) {
+          const urlRegex = /^https?:\/\/.+\..+/;
+          if (!urlRegex.test(link)) {
+            showError(
+              "linkError",
+              "Please enter a valid URL (starting with http:// or https://)"
+            );
+            isValid = false;
+          }
+        }
+
+        // Message validation
+        if (message.length < 10) {
+          showError(
+            "messageError",
+            "Message must be at least 10 characters long"
+          );
+          isValid = false;
+        }
+
+        return isValid;
       }
+
+      function showError(elementId, message) {
+        const errorElement = document.getElementById(elementId);
+        errorElement.textContent = message;
+        errorElement.classList.add("show");
+      }
+
+      function clearErrors() {
+        const errorElements = document.querySelectorAll(".error-message");
+        errorElements.forEach((element) => {
+          element.classList.remove("show");
+          element.textContent = "";
+        });
+      }
+
+      function showMessage(message, type) {
+        formMessage.textContent = message;
+        formMessage.className = `form-message ${type} show`;
+
+        // Hide message after 5 seconds
+        setTimeout(() => {
+          formMessage.classList.remove("show");
+        }, 5000);
+      }
+
+      function setLoading(isLoading) {
+        submitBtn.disabled = isLoading;
+        if (isLoading) {
+          btnText.classList.add("hide");
+          loadingSpinner.classList.add("show");
+        } else {
+          btnText.classList.remove("hide");
+          loadingSpinner.classList.remove("show");
+        }
+      }
+
+      // Form submission
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        if (!validateForm()) {
+          return;
+        }
+
+        setLoading(true);
+
+        const formData = new FormData(form);
+        const data = {
+          name: formData.get("name"),
+          email: formData.get("email"),
+          phone: formData.get("phone") || "",
+          link: formData.get("link") || "",
+          message: formData.get("message"),
+        };
+
+        try {
+          const response = await fetch("/.netlify/functions/contact", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            showMessage(
+              "Thank you! Your message has been sent successfully. I'll get back to you soon!",
+              "success"
+            );
+            form.reset();
+          } else {
+            showMessage(
+              result.message || "Something went wrong. Please try again.",
+              "error"
+            );
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          showMessage(
+            "Network error. Please check your connection and try again.",
+            "error"
+          );
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      // Real-time validation
+      document.getElementById("name").addEventListener("blur", function () {
+        if (this.value.trim().length > 0 && this.value.trim().length < 2) {
+          showError("nameError", "Name must be at least 2 characters long");
+        } else {
+          document.getElementById("nameError").classList.remove("show");
+        }
+      });
+
+      document.getElementById("email").addEventListener("blur", function () {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (
+          this.value.trim().length > 0 &&
+          !emailRegex.test(this.value.trim())
+        ) {
+          showError("emailError", "Please enter a valid email address");
+        } else {
+          document.getElementById("emailError").classList.remove("show");
+        }
+      });
+
+      document.getElementById("phone").addEventListener("blur", function () {
+        const phoneRegex = /^[\+]?[0-9\s\-\(\)]{6,20}$/;
+        if (
+          this.value.trim().length > 0 &&
+          !phoneRegex.test(this.value.trim())
+        ) {
+          showError("phoneError", "Please enter a valid phone number");
+        } else {
+          document.getElementById("phoneError").classList.remove("show");
+        }
+      });
+
+      document.getElementById("link").addEventListener("blur", function () {
+        const urlRegex = /^https?:\/\/.+\..+/;
+        if (this.value.trim().length > 0 && !urlRegex.test(this.value.trim())) {
+          showError(
+            "linkError",
+            "Please enter a valid URL (starting with http:// or https://)"
+          );
+        } else {
+          document.getElementById("linkError").classList.remove("show");
+        }
+      });
+
+      document.getElementById("message").addEventListener("blur", function () {
+        if (this.value.trim().length > 0 && this.value.trim().length < 10) {
+          showError(
+            "messageError",
+            "Message must be at least 10 characters long"
+          );
+        } else {
+          document.getElementById("messageError").classList.remove("show");
+        }
+      });
 
       // Initialize everything
       function init() {
