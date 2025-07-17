@@ -1,0 +1,28 @@
+[build]
+  functions = "netlify/functions"
+  publish = "."
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type"
+    Access-Control-Allow-Methods = "POST, OPTIONS"
+
+# Redirect rules (optional)
+[[redirects]]
+  from = "/contact"
+  to = "/#contact"
+  status = 301
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
