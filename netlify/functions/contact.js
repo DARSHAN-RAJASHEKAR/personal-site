@@ -441,13 +441,7 @@ const getUserConfirmationTemplate = (name) => {
           
           <div class="message">
             Thank you for taking the time to reach out to me through my website. 
-            I've received your message and I'm excited to connect with you!
-          </div>
-          
-          <div class="highlight-box">
-            <h3>What happens next? 🚀</h3>
-            <p>I'll review your message and get back to you within 24-48 hours. 
-               I look forward to our conversation!</p>
+            I've received your message and I'm excited to connect with you! I'll get back to you within 24-48 hours.
           </div>
           
           <div class="developer-info">
@@ -459,7 +453,7 @@ const getUserConfirmationTemplate = (name) => {
             <p>• Always learning and exploring new technologies</p>
             
             <div class="social-links">
-              <a href="mailto:contact@darshan-rajashekar.dev" class="social-link">📧 Email Me</a>
+              <a href="https://darshanrajashekar.dev/#calendar" class="social-link">📅 Schedule Call</a>
               <a href="https://darshan-rajashekar.netlify.app" class="social-link">🌐 Visit Website</a>
             </div>
           </div>
