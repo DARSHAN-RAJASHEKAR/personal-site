@@ -459,7 +459,7 @@ const getUserConfirmationTemplate = (name) => {
             <p>• Always learning and exploring new technologies</p>
             
             <div class="social-links">
-              <a href="mailto:darshan.rajashekar28@gmail.com" class="social-link">📧 Email Me</a>
+              <a href="mailto:contact@darshan-rajashekar.dev" class="social-link">📧 Email Me</a>
               <a href="https://darshan-rajashekar.netlify.app" class="social-link">🌐 Visit Website</a>
             </div>
           </div>
