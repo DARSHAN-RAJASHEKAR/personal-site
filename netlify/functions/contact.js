@@ -1,5 +1,5 @@
 // netlify/functions/contact.js
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
 // HTML Email Template for Admin (You)
 const getAdminEmailTemplate = (name, email, phone, link, message) => {
@@ -554,50 +554,33 @@ exports.handler = async (event, context) => {
       }
     }
 
-    // Debug: Log environment variables (without exposing password)
-    console.log("SMTP Configuration:");
-    console.log("SMTP_USER:", process.env.SMTP_USER);
-    console.log("EMAIL_USER:", process.env.EMAIL_USER);
-    console.log("SMTP_USER exists:", !!process.env.SMTP_USER);
-    console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
-    console.log("EMAIL_PASS length:", process.env.EMAIL_PASS?.length || 0);
-
-    // Create transporter for Zoho Mail
-    const transporter = nodemailer.createTransport({
-      host: "smtp.zoho.com",
-      port: 587,
-      secure: false,
-      requireTLS: true,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      debug: true,
-      logger: true,
-    });
-
-    // Email to admin (you)
-    const adminMailOptions = {
-      from: `"${name}" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
-      subject: `🚀 New Contact Form Submission from ${name}`,
-      html: getAdminEmailTemplate(name, email, phone, link, message),
-      replyTo: email,
-    };
-
-    // Confirmation email to user
-    const userMailOptions = {
-      from: `"Darshan Rajashekar" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: `Thanks for reaching out, ${name}! 🎉`,
-      html: getUserConfirmationTemplate(name),
-    };
+    // Initialize Resend
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Send both emails
-    await Promise.all([
-      transporter.sendMail(adminMailOptions),
-      transporter.sendMail(userMailOptions),
+    const [adminResult, userResult] = await Promise.all([
+      // Email to admin (you)
+      resend.emails.send({
+        from: `${name} via Contact Form <contact@darshanrajashekar.dev>`,
+        to: "contact@darshanrajashekar.dev",
+        reply_to: email,
+        subject: `🚀 New Contact Form Submission from ${name}`,
+        html: getAdminEmailTemplate(name, email, phone, link, message),
+      }),
+      // Confirmation email to user
+      resend.emails.send({
+        from: "Darshan Rajashekar <contact@darshanrajashekar.dev>",
+        to: email,
+        subject: `Thanks for reaching out, ${name}! 🎉`,
+        html: getUserConfirmationTemplate(name),
+      }),
     ]);
+
+    // Check for errors
+    if (adminResult.error || userResult.error) {
+      console.error("Resend error:", adminResult.error || userResult.error);
+      throw new Error("Failed to send email");
+    }
 
     return {
       statusCode: 200,

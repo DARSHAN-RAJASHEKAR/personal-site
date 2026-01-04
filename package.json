@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "nodemailer": "^6.9.7"
+    "resend": "^6.6.0"
   },
   "keywords": [
     "netlify",
