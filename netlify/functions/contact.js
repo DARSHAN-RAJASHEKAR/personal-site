@@ -554,6 +554,14 @@ exports.handler = async (event, context) => {
       }
     }
 
+    // Debug: Log environment variables (without exposing password)
+    console.log("SMTP Configuration:");
+    console.log("SMTP_USER:", process.env.SMTP_USER);
+    console.log("EMAIL_USER:", process.env.EMAIL_USER);
+    console.log("SMTP_USER exists:", !!process.env.SMTP_USER);
+    console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
+    console.log("EMAIL_PASS length:", process.env.EMAIL_PASS?.length || 0);
+
     // Create transporter for Zoho Mail
     const transporter = nodemailer.createTransport({
       host: "smtp.zoho.com",
@@ -564,6 +572,8 @@ exports.handler = async (event, context) => {
         user: process.env.SMTP_USER,
         pass: process.env.EMAIL_PASS,
       },
+      debug: true,
+      logger: true,
     });
 
     // Email to admin (you)
