@@ -556,20 +556,21 @@ exports.handler = async (event, context) => {
 
     // Initialize Resend
     const resend = new Resend(process.env.RESEND_API_KEY);
+    const contactEmail = process.env.CONTACT_EMAIL;
 
     // Send both emails
     const [adminResult, userResult] = await Promise.all([
       // Email to admin (you)
       resend.emails.send({
-        from: `${name} via Contact Form <contact@darshanrajashekar.dev>`,
-        to: "contact@darshanrajashekar.dev",
+        from: `${name} via Contact Form <${contactEmail}>`,
+        to: contactEmail,
         reply_to: email,
         subject: `🚀 New Contact Form Submission from ${name}`,
         html: getAdminEmailTemplate(name, email, phone, link, message),
       }),
       // Confirmation email to user
       resend.emails.send({
-        from: "Darshan Rajashekar <contact@darshanrajashekar.dev>",
+        from: `Darshan Rajashekar <${contactEmail}>`,
         to: email,
         subject: `Thanks for reaching out, ${name}! 🎉`,
         html: getUserConfirmationTemplate(name),
