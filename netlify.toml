@@ -8,9 +8,9 @@
 [[headers]]
   for = "/.netlify/functions/*"
   [headers.values]
-    Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Headers = "Content-Type"
     Access-Control-Allow-Methods = "POST, OPTIONS"
+    # Note: CORS origin is dynamically set in the function code for security
 
 # Redirect rules (optional)
 [[redirects]]

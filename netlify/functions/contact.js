@@ -1,6 +1,27 @@
 // netlify/functions/contact.js
 const { Resend } = require("resend");
 
+// Security: Sanitize input to prevent email header injection
+const sanitizeEmailHeader = (input) => {
+  if (!input) return "";
+  // Remove newlines, carriage returns, and null bytes that could inject headers
+  return input.replace(/[\r\n\0]/g, "").trim();
+};
+
+// Security: Escape HTML special characters to prevent XSS in emails
+const escapeHtml = (input) => {
+  if (!input) return "";
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#x27;',
+    '/': '&#x2F;',
+  };
+  return input.replace(/[&<>"'/]/g, (char) => map[char]);
+};
+
 // HTML Email Template for Admin (You)
 const getAdminEmailTemplate = (name, email, phone, link, message) => {
   return `
@@ -186,54 +207,54 @@ const getAdminEmailTemplate = (name, email, phone, link, message) => {
           <div class="form-data">
             <div class="field">
               <label class="field-label">👤 Name:</label>
-              <div class="field-value">${name}</div>
+              <div class="field-value">${escapeHtml(name)}</div>
             </div>
-            
+
             <div class="field">
               <label class="field-label">📧 Email:</label>
-              <div class="field-value">${email}</div>
+              <div class="field-value">${escapeHtml(email)}</div>
             </div>
-            
+
             ${
               phone
                 ? `
             <div class="field">
               <label class="field-label">📱 Phone:</label>
-              <div class="field-value">${phone}</div>
+              <div class="field-value">${escapeHtml(phone)}</div>
             </div>
             `
                 : ""
             }
-            
+
             ${
               link
                 ? `
             <div class="field">
               <label class="field-label">🔗 Website/LinkedIn:</label>
               <div class="field-value">
-                <a href="${link}" target="_blank" rel="noopener noreferrer" class="link-field">${link}</a>
+                <a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer" class="link-field">${escapeHtml(link)}</a>
               </div>
             </div>
             `
                 : ""
             }
-            
+
             <div class="field">
               <label class="field-label">💬 Message:</label>
-              <div class="field-value">${message}</div>
+              <div class="field-value">${escapeHtml(message)}</div>
             </div>
           </div>
           
           <div class="quick-actions">
-            <a href="mailto:${email}" class="action-btn">Reply to ${name}</a>
+            <a href="mailto:${escapeHtml(email)}" class="action-btn">Reply to ${escapeHtml(name)}</a>
             ${
               phone
-                ? `<a href="tel:${phone}" class="action-btn secondary">Call ${phone}</a>`
+                ? `<a href="tel:${escapeHtml(phone)}" class="action-btn secondary">Call ${escapeHtml(phone)}</a>`
                 : ""
             }
             ${
               link
-                ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="action-btn secondary">Visit Profile</a>`
+                ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer" class="action-btn secondary">Visit Profile</a>`
                 : ""
             }
           </div>
@@ -437,7 +458,7 @@ const getUserConfirmationTemplate = (name) => {
         </div>
         
         <div class="content">
-          <div class="greeting">Hi ${name}! 👋</div>
+          <div class="greeting">Hi ${escapeHtml(name)}! 👋</div>
           
           <div class="message">
             Thank you for taking the time to reach out to me through my website. 
@@ -483,9 +504,19 @@ const getUserConfirmationTemplate = (name) => {
 };
 
 exports.handler = async (event, context) => {
-  // Handle CORS
+  // Handle CORS - Restrict to your domain(s) only
+  const allowedOrigins = [
+    "https://darshanrajashekar.dev",
+    "https://darshan-rajashekar.netlify.app",
+    "http://localhost:8888", // For local development
+    "http://127.0.0.1:8888"
+  ];
+
+  const origin = event.headers.origin || event.headers.Origin;
+  const allowedOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+
   const headers = {
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": allowedOrigin,
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
   };
@@ -520,9 +551,15 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Email validation
+    // Sanitize inputs to prevent email header injection
+    const sanitizedName = sanitizeEmailHeader(name);
+    const sanitizedEmail = sanitizeEmailHeader(email);
+    const sanitizedPhone = sanitizeEmailHeader(phone || "");
+    const sanitizedLink = sanitizeEmailHeader(link || "");
+
+    // Email validation (use sanitized email)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(sanitizedEmail)) {
       return {
         statusCode: 400,
         headers,
@@ -531,9 +568,9 @@ exports.handler = async (event, context) => {
     }
 
     // Phone validation (if provided)
-    if (phone && phone.trim()) {
+    if (sanitizedPhone && sanitizedPhone.trim()) {
       const phoneRegex = /^[\+]?[0-9\s\-\(\)]{6,20}$/;
-      if (!phoneRegex.test(phone.trim())) {
+      if (!phoneRegex.test(sanitizedPhone.trim())) {
         return {
           statusCode: 400,
           headers,
@@ -543,9 +580,9 @@ exports.handler = async (event, context) => {
     }
 
     // Link validation (if provided)
-    if (link && link.trim()) {
+    if (sanitizedLink && sanitizedLink.trim()) {
       const urlRegex = /^https?:\/\/.+\..+/;
-      if (!urlRegex.test(link.trim())) {
+      if (!urlRegex.test(sanitizedLink.trim())) {
         return {
           statusCode: 400,
           headers,
@@ -558,21 +595,21 @@ exports.handler = async (event, context) => {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const contactEmail = process.env.CONTACT_EMAIL;
 
-    // Send both emails
+    // Send both emails - use sanitized values for headers, original for content display
     const [adminResult, userResult] = await Promise.all([
       // Email to admin (you)
       resend.emails.send({
-        from: `${name} via Contact Form <${contactEmail}>`,
+        from: `${sanitizedName} via Contact Form <${contactEmail}>`,
         to: contactEmail,
-        reply_to: email,
-        subject: `🚀 New Contact Form Submission from ${name}`,
+        reply_to: sanitizedEmail,
+        subject: `🚀 New Contact Form Submission from ${sanitizedName}`,
         html: getAdminEmailTemplate(name, email, phone, link, message),
       }),
       // Confirmation email to user
       resend.emails.send({
         from: `Darshan Rajashekar <${contactEmail}>`,
-        to: email,
-        subject: `Thanks for reaching out, ${name}! 🎉`,
+        to: sanitizedEmail,
+        subject: `Thanks for reaching out, ${sanitizedName}! 🎉`,
         html: getUserConfirmationTemplate(name),
       }),
     ]);
